@@ -1,0 +1,43 @@
+<title>Start Page</title>
+<body>
+    <script src="/scripts/jquery.js"></script>
+
+    Welcome to start page. <br/>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div> <!-- search box  -->
+        <input type="text" name="search_tag" id="search_tag" value="">
+        <input type="submit" name="sub_stag" id="sub_stag" value="search" onclick="">
+    </div>
+
+
+    <div id=dir_content>
+        Web Map:
+        <div id="path" > </div>
+        ________________________________________________<br/>
+        <div id="dirs" > </div>
+    </div>
+
+    <script charset="utf-8">
+        function clear(){
+        $('#dirs').append($('<a href="http://www.url.com" target="_blank">------qqq-------</a><br/>'));
+    }
+    // init page.
+    $(function(){
+        // init path
+        $('#path').append($('<a href="javascript:clear(0);">.</a> <a> > </a>'));
+        $('#path').append($('<a href="javascript:clear(0);">bb</a> <a> > </a>'));
+        $('#path').append($('<a href="javascript:clear(0);">cc</a> <a> > </a>'));
+        $('#path').append($('<a href="javascript:add(0);">dd</a></a>'));
+        // init dirs in path.
+        $("#dirs").append($('<a href="http://baidu.com" target="_blank">Anchor Text</a><br/>'));
+        $("#dirs").append($('<a href="http://baidu.com" target="_blank">Anchor Text2</a>'));
+
+    })
+
+    </script>
+</body>
+

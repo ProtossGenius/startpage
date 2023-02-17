@@ -1,0 +1,68 @@
+<title>Start Page</title>
+<body>
+    <script src="/scripts/jquery.js"></script>
+
+    <div id=head>
+        Welcome to start page.
+        <div style='float:right' id=user_status>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <div> <!-- search box  -->
+        <input type="text" name="stag" id="stag" value="">
+        <input type="submit" name="sub_tag" id="sub_tag" value="search" onclick="searchTag()">
+    </div>
+
+
+    <div id=dir_content>
+        Web Map:
+        <div id="actions" style="float:right">
+            Actions:
+            <input type="submit" name="add_tag" id="add_tag" value="add tag">
+        </div>
+        <div id="path" > </div>
+        ________________________________________________<br/>
+        <div id="dirs" > </div>
+
+    </div>
+
+    <script charset="utf-8">
+        function clear(){
+        $('#dirs').append($('<a href="http://www.url.com" target="_blank">------qqq-------</a><br/>'));
+    }
+    // init page.
+    $(function(){
+        if(sessionStorage.customId == undefined) {
+            $('#head').append($('<a href="javascript:login();" style="float:right" >Login</a>'));
+        } else {
+            $('#head').append($('<div style="float:right">Have fine: <a href="javascript:toPersonPage(0);">'
+            + sessionStorage.customId + '</a> </div>'));
+        }         // init path
+        $('#path').append($('<a href="javascript:clear(0);">.</a> <a> > </a>'));
+        $('#path').append($('<a href="javascript:clear(0);">bb</a> <a> > </a>'));
+        $('#path').append($('<a href="javascript:clear(0);">cc</a> <a> > </a>'));
+        $('#path').append($('<a href="javascript:add(0);">dd</a></a>'));
+        // init dirs in path.
+        $("#dirs").append($('<a href="http://baidu.com" target="_blank">Anchor Text</a><br/>'));
+        $("#dirs").append($('<a href="http://baidu.com" target="_blank">Anchor Text2</a>'));
+
+    })
+    function login() {
+        sessionStorage.customId = 1;
+    }
+    function toPersonPage() {
+        alert("no do this page.");
+    }
+
+    function searchTag() {
+        alert("you're searching " + $("#stag").val());
+    }
+
+
+    </script>
+</body>
+

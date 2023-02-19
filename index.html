@@ -1,9 +1,10 @@
 <title>Start Page</title>
 <body>
-    <script src="/scripts/jquery.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script src="/scripts/net.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
     <div id=head>
-        Welcome to start page.
+        Welcome to start page. 
         <div style='float:right' id=user_status>
         </div>
     </div>
@@ -20,8 +21,10 @@
 
     <div id=dir_content>
         Web Map:
-        <div id="actions" style="float:right">
+        <div id="actions">
             Actions:
+            <input type="submit" name="add_tag" id="add_tag" value="add tag">
+            <input type="submit" name="add_tag" id="add_tag" value="add tag">
             <input type="submit" name="add_tag" id="add_tag" value="add tag">
         </div>
         <div id="path" > </div>
@@ -36,12 +39,8 @@
     }
     // init page.
     $(function(){
-        if(sessionStorage.customId == undefined) {
-            $('#head').append($('<a href="javascript:login();" style="float:right" >Login</a>'));
-        } else {
-            $('#head').append($('<div style="float:right">Have fine: <a href="javascript:toPersonPage(0);">'
-            + sessionStorage.customId + '</a> </div>'));
-        }         // init path
+    updateUserStatus();
+                 // init path
         $('#path').append($('<a href="javascript:clear(0);">.</a> <a> > </a>'));
         $('#path').append($('<a href="javascript:clear(0);">bb</a> <a> > </a>'));
         $('#path').append($('<a href="javascript:clear(0);">cc</a> <a> > </a>'));
@@ -52,14 +51,70 @@
 
     })
     function login() {
-        sessionStorage.customId = 1;
+        var $mask = $(
+            //要加进页面的内容（弹框内容）
+            '<div id="login_window" class="mask">\n' +
+              '<div class="login">\n' +
+              '<a href="#"><span class="login_span">取消</span></a>' +
+              '<h3 class="login_h3">登录框</h3>' +
+              "<br />" +
+              '<input class="loginp" id="email" type="text" placeholder="邮箱" />' +
+              '<input class="loginp" id="passwd" type="password" placeholder="请输入密码" />' +
+              '<input class="loginp" type="submit" onclick="doLogin()"/>' +
+              "</div></div>"
+          );
+          //然后将$mask添加到body里，
+          $("body").append($mask);
+          /* 事件委托（给新增节点添加事件），点击取消后关闭登录窗口 */
+          $("body").delegate(".login>a", "click", function () {
+            $mask.remove();
+          });
+    }
+
+    function updateUserStatus() {
+        $('#user_status').empty();
+        if(sessionStorage.customId == undefined) {
+            $('#user_status').append($('<a href="javascript:login();">Login</a>'));
+        } else {
+            $('#user_status').append($('<div>Have fine: <a href="javascript:toPersonPage(0);">'
+            + sessionStorage.customId + '</a> </div>'));
+
+            $('#user_status').append($('<a href="javascript:logout();">Logout</a>'));
+        }
+    }
+
+    function doLogin() {
+        $.post(geturl("Login"),JSON.stringify({email:$("#email").val(), passwd:$("#passwd").val()}), function(data, status) {
+            if (status != "success") {
+                alert("network error.");
+                return;
+            } 
+            data = JSON.parse(data);
+            if (data.status != 0) {
+                alert("login fail:" + data.data); 
+                return
+            }
+            sessionStorage.customId = data.data; 
+            updateUserStatus();
+
+            $("#login_window").remove();
+        });
+    }
+    function logout() {
+        delete sessionStorage.customId; 
+        updateUserStatus();
     }
     function toPersonPage() {
-        alert("no do this page.");
     }
 
     function searchTag() {
-        alert("you're searching " + $("#stag").val());
+        $.post(geturl("SearchTag"),JSON.stringify({tags:["a", "B", "C"]}), function(data, status) {
+            if (status == "success") {
+                alert("Data: " + data + ",Status: " + status);
+            } else {
+                alert("fail");
+            }
+        });
     }
 
 

@@ -84,7 +84,17 @@
     }
 
     function doLogin() {
-        $.post(geturl("Login"),JSON.stringify({email:$("#email").val(), passwd:$("#passwd").val()}), function(data, status) {
+        $.ajax({
+        method : "POST",
+        type : "POST",
+        url : geturl("Login"),
+        headers : {
+            "token" : "helloworld",
+            //'Content-Type' : 'application/json'
+
+        },
+        data: JSON.stringify({email:$("#email").val(), passwd:$("#passwd").val()}), 
+        success: function(data, status) {
             if (status != "success") {
                 alert("network error.");
                 return;
@@ -98,7 +108,9 @@
             updateUserStatus();
 
             $("#login_window").remove();
-        });
+        }
+        }
+        );
     }
     function logout() {
         delete sessionStorage.customId; 
